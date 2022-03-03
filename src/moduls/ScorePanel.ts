@@ -24,9 +24,4 @@ class ScorePanel {
         }
     }
 }
-
-const panel = new ScorePanel(10);
-for(let i =0 ; i< 100; i++){
-    panel.addScore();
-}
 export default ScorePanel

@@ -7,7 +7,7 @@ class GameControl {
     scorePanel: ScorePanel
     //当前方向
     direction: string = ''
-    isLive: boolean = false
+    isLive: boolean = true
 
     constructor() {
         this.food = new Food()
@@ -23,10 +23,6 @@ class GameControl {
     }
 
     keyboardHandler(event: KeyboardEvent){
-        if(event.code === 'Space'){
-            this.isLive = !this.isLive
-            this.run()
-        }
         this.direction = event.code
     }
 
@@ -47,11 +43,25 @@ class GameControl {
             case 'ArrowRight':
                 x += 10
         }
+        this.checkIsEatFood(x, y)
+        try {
+            this.snake.X = x
+            this.snake.Y = y
+        } catch (e){
+            this.isLive = false
+            alert((e as Error).message)
+        }
 
-        this.snake.X = x
-        this.snake.Y = y
 
         this.isLive && setTimeout(this.run.bind(this), 300 - (this.scorePanel.level - 1) * 30)
+    }
+
+    checkIsEatFood(x:number,y:number){
+        if(x=== this.food.X && y === this.food.Y){
+            this.food.change()
+            this.snake.addBody()
+            this.scorePanel.addScore()
+        }
     }
 
 }
